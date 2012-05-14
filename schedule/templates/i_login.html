@@ -1,0 +1,51 @@
+<div id="login" class="">
+	<h2 class="form-title">欢迎您回来</h2>
+	<form id="login-form" method="post" action="/calendar/auth" name="login" class="form-horizontal custom-form-left">
+		{% csrf_token %}
+		<input type="hidden" name="next"></input>
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">邮箱地址</label>
+				<div class="controls">
+					<input name="username" type="email" required="required" autofocus="autofocus" class="span3"></input>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">密码</label>
+				<div class="controls">
+					<input name="password" type="password" required="required" class="span3"></input>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">记录登录状态</label>
+				<div class="controls">
+					<label class="checkbox">
+						<input name="keep-login" type="checkbox" checked="checked"></input>
+					</label>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">滑动解锁</label>
+				<div class="controls">
+					<div class="slider slider-locker"></div>
+				</div>
+			</div>
+			
+			<div id="login-alert" class="alert alert-block alert-error hide-self c-hidden">
+				<a class="close" close="#login-alert" href="#">x</a>
+				<span class="alert-content"></span>
+			</div>
+			
+			<div class="control-group">
+				<div class="controls">
+					<input type="image" name="submit" value="提交" src="{{ STATIC_URL }}img/btn_login.gif"></input>
+				</div>
+			</div>
+		
+			<div class="control-group">
+				<label class="control-label">没有账号？<a href="/calendar/register">注册</a></label>
+			</div>
+		
+		</fieldset>
+	</form>
+</div>

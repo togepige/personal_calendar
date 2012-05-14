@@ -1,0 +1,178 @@
+{% load shortcutTags %}
+<div class="calendar">
+	{% include "i_calendar_head.html" %}
+	<div class="d-month">
+		<div class="d-month-head">
+			<table class="t-month-head">
+				<tbody>
+					<tr>
+						{% for i in 7|getRange %}
+						<td id="month-head-{{ forloop.counter0 }}">1</td>
+						{% endfor %}
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="d-month-body">
+			{% for i in 5|getRange %}
+			<div class="d-month-row">
+				<table class="t-month-row-base">
+					<tbody>
+						<tr>
+							{% for i in 7|getRange %}
+							<td class="td-day-grid-bg">&nbsp;</td>
+							{% endfor %}
+						</tr>
+					</tbody>
+				</table>
+				<table class="t-month-row-event">
+					<tbody>
+						<tr>
+							{% for i in 7|getRange %}
+							<td class="td-day-grid-title">
+								<div class="d-day-grid-title-number"></div>
+							</td>
+							{% endfor %}
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+<div id="simple-add-modal" class="modal middle-modal c-hidden activity-form-container">
+	<div class="modal-header">
+		<h4 class="selected tab-link" tab="#simple-activity">日程</h4>
+		<span>|</span>
+		<h4 class="unselected tab-link" tab="#simple-todo">待办事项</h4> 
+		<a class="close modal-close" close="#simple-add-modal">×</a>
+	</div>
+	<div class="modal-body">
+		<div id="activity-simple">
+			<form class="form-horizontal custom-form-left" autocomplete="off" id="simple-activity-form" name="simple-activity" method="post" action="/calendar/update/activity/detail">
+				{% csrf_token %}
+				<input name="begin-datetime" type="hidden"></input>
+				<input name="is-whole-day" type="checkbox" style="display:none" checked="checked"></input>
+				<div class="control-group">
+					<label class="control-label">时间:</label>
+					<div class="controls">
+						<label class="clicked-date text"></label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">内容:</label>
+					<div class="controls">
+						<input type="text" class="span3" name="content"></input>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div id="simple-todo" class="c-hidden">
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="hide-modal edit-detail btn">编辑详细</button>
+		<button class="btn btn-primary simple-submit hide-modal">创建日程</button>
+	</div>
+</div>
+
+
+<div id="simple-edit-modal" class="modal middle-modal c-hidden activity-form-container">
+	<div class="modal-header">
+		<a class="close modal-close" close="#simple-edit-modal">×</a>
+		<h3>活动修改</h3>
+	</div>
+	<div class="modal-body">
+		<form class="form-horizontal custom-form-left" autocomplete="off" id="simple-edit-form" method="post" action="/calendar/update/activity/detail">
+			<input name="pk" type="hidden"></input>
+			<input name="action" type="hidden" value="update"/>
+			<div class="control-group">
+				<label class="control-label">时间:</label>
+				<div class="controls">
+					<label class="clicked-date text"></label>
+					<label class="end-datetime text"></label>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">标题:</label>
+				<div class="controls">
+					<input name="title" type="text" class="span3" placeholder="无标题"></input>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">内容:</label>
+				<div class="controls">
+					<input name="content" type="text" class="span3" placeholder="无内容"></input>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button id="simple-delete" class="activity-detail hide-modal btn btn-danger left">删除</input>
+		<button class="edit-detail btn hide-modal">编辑详细</button>
+		<button id="simple-update" class="btn btn-primary hide-modal">保存</button>
+	</div>
+</div>
+
+<div id="calendar-activity-broswer" class="activity-broswer modal small-modal c-hidden">
+	<div class="modal-header">
+		<a class="close modal-close" close="#calendar-activity-broswer">×</a>
+		<h3>查看活动:<span class="title-date"></span></h3>
+	</div>
+	<div class="modal-body">
+		<table>
+
+		</table>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary hide-modal">关闭</button>
+	</div>
+</div>
+
+
+<div id="calendar-template" class="template">
+
+	<div class="d-month-row">
+		<table class="t-month-row-base">
+			<tbody>
+				<tr>
+					{% for i in 7|getRange %}
+					<td class="td-day-grid-bg">&nbsp;</td>
+					{% endfor %}
+				</tr>
+			</tbody>
+		</table>
+	
+		<table class="t-month-row-event">
+			<tbody>
+				<tr>
+					{% for i in 7|getRange %}
+					<td class="td-day-grid-title">
+						<div class="d-day-grid-title-number"></div>
+					</td>
+					{% endfor %}
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<table>
+		<tr class="tr-event-row">
+			{% for i in 7|getRange %}
+			<td class="td-event empty">
+				<div class="d-event-content">&nbsp;</div>
+			</td>
+			{% endfor %}
+		</tr>
+
+		<tr class="tr-event-broswer">
+			<td class="td-event">
+				<span class="event-time"></span>
+				<span class="event-content"></span>
+			</td>
+		</td>
+	</table>
+</div>

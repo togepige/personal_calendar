@@ -1,0 +1,132 @@
+{% load shortcutTags %}
+<div id="calendar-activity-detail" class="activity-detail-container c-hidden activity-form-container">
+	<div id="activity-detail-head" class="calendar-menu">
+		<button id="activity-detail-submit" class="btn btn-primary">保存</button>
+		<button id="activity-detail-cancel" class="btn btn-danger pull-right">放弃</button>
+	</div>
+
+	<div id="activity-detail-body" class="calendar-body">
+		<form class="form-horizontal custom-form-left" autocomplete="off" id="activity-detail-form" method="post" action="/calendar/update/activity/detail">
+			<fieldset>
+				<input name="pk" type="hidden" />
+				<input name="begin-datetime" type="hidden" />
+				<input name="end-datetime" type="hidden" />
+				<input name="is-whole-day" type="hidden" />
+				<input name="repeat-weekday" type="hidden" />
+				<input name="is-repeat" type="hidden" />
+
+				<div class="control-group">
+					<label class="control-label">标题</label>
+					<div class="controls">
+						<input type="text" class="span4" name="title" placeholder="无标题"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">全天</label>
+					<div class="controls">
+						<label class="checkbox">
+							<input name="c-is-whole-day" type="checkbox">
+							是否全天?
+							</input>
+						</label>
+					</div>
+					<label class="control-label">时间</label>
+					<div class="controls">
+						<input name="begin-date" type="text" class="input-small date-picker" />
+						<input name="begin-time" class="time c-hidden span1"></select>
+						<input name="end-date" type="text" class="input-small date-picker" />
+						<input name="end-time"class="time c-hidden span1"></select>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label">内容</label>
+					<div class="controls">
+						<textarea name="content" rows="5" class="span4"></textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">地点</label>
+					<div class="controls">
+						<input name="location" type="text" class="span4"></input>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">日历本</label>
+					<div class="controls">
+						<select name="calendar-book" class="span2"></select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">重复</label>
+					<div class="controls">
+						<label class="checkbox">
+							<input name="c-is-repeat" type="checkbox" data-toggle="collapse" data-target="#repeat-info">
+							是否重复?
+							</input>
+						</label>
+					</div>
+					<div class="collapse" id="repeat-info">
+						<label class="control-label">重复类型</label>
+						<div class="controls in-group">
+							<select name="repeat-type" class="input-small">
+								<option value="D">每天</option>
+								<option value="W">每周</option>
+								<option value="workday">每周的工作日</option>
+								<option value="M">每月</option>
+								<option value="Y">每年</option>
+							</select>
+						</div>
+						<label class="control-label">重复频率</label>
+						<div class="controls">
+							<select name="repeat-interval" class="input-small in-group">
+								{% for i in 30|getRange %}
+								<option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+								{% endfor %}
+							</select>
+							<div class="weekdays c-hidden">
+								<label class="checkbox">
+									<input name="weekday-0" type="checkbox">周天</input>
+								</label>
+								<label class="checkbox">
+									<input name="weekday-1" type="checkbox">周一</input>							</label>
+								<label class="checkbox">
+									<input name="weekday-2" type="checkbox">周二</input>
+								</label>
+								<label class="checkbox">
+									<input name="weekday-3" type="checkbox">周三</input>
+								</label>
+								<label class="checkbox">
+									<input name="weekday-4" type="checkbox">周四</input>
+								</label>
+								<label class="checkbox">
+									<input name="weekday-5" type="checkbox">周五</input>
+								</label>
+								<label class="checkbox">
+									<input name="weekday-6" type="checkbox">周六</input>
+								</label>
+							</div>
+						</div>
+						
+						<label class="control-label">何时结束</label>
+						<div class="controls">
+							<label class="radio">
+								<input type="radio" name="end-type" value="N" checked="checked">从不</input>
+							</label>
+							<label class="radio">
+								<input type="radio" name="end-type" value="T">次数</input>
+								<input type="text" name="times-to-end" class="input-small"></input>
+							</label>
+							<label class="radio">
+								<input type="radio" name="end-type" value="D">日期</input>
+								<input type="text" name="date-to-end" class="input-small date-picker"></input>
+							</label>		
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+
+

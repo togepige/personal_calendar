@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load shortcutTags %}
+
+{% block css %}
+	<link rel="stylesheet" href="{{ STATIC_URL}}css/calendar.css"></link>
+	<link rel="stylesheet" href="{{ STATIC_URL}}css/calendar-plugin.css"></link>
+{% endblock %}
+
+{% block js %}
+	<script src="{{ STATIC_URL }}scripts/calendar.js"></script>
+	<script src="{{ STATIC_URL }}scripts/calendar-plugin.js"></script>
+	<script src="{{ STATIC_URL }}scripts/calendar-detail.js"></script>
+	<script src="{{ STATIC_URL }}scripts/calendar-modal.js"></script>
+	<script src="{{ STATIC_URL }}scripts/user-setting.js"></script>
+	<script src="{{ STATIC_URL }}scripts/calendar-table.js"></script>
+{% endblock %}
+
+{% block navbar %}
+	<div class="nav-collapse">
+	</div>
+	<ul class="nav">
+	  <li class="active"><a id="to-calendar">日历主页</a></li>
+	  <li class="active"><a id="to-user-setting">个人设置</a></li>
+	</ul>
+	<form class="navbar-form pull-left">
+		<input type="text" class="search-query span2" placeholder="搜索"/>
+	</form>
+	
+	<ul class="nav pull-right">
+	  <li class="active"><a href="/calendar/logout">退出登录</a></li>
+	</ul>
+	
+	<p id="now-username" class="navbar-text pull-right">{{ user.username }}</p>
+</div>
+{% endblock %}
+{% block main%}
+	<div class="container-fluid">
+		<div id="calendar-main" container-group="main" container-index="1" class="active">
+			<div class="row-fluid">
+				<div class="span2 full" >
+					{% include "i_calendar_left.html" %}
+				</div>
+				<div class="span10">
+					<div id="calendar-container">
+						{% include "i_calendar_month_new.html" %}
+						{% include "i_calendar_detail.html" %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="user-setting" class="c-hidden" container-group="main" container-index="2">
+			{% include "i_user_setting.html" %}
+		</div>
+	</div>
+{% endblock %}

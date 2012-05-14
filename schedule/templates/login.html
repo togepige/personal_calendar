@@ -1,0 +1,17 @@
+<!--继承自base.html-->
+{% extends 'base.html' %}
+{% load shortcutTags %}
+{% block js %}
+<script src="{{	STATIC_URL }}scripts/login.js"></script>
+{% endblock %}
+{% block main%}
+	<div class="row-fluid">
+		<div class="span6">
+			{% include "i_intro_main.html" %}
+		</div>
+		<div class="span6">
+			{% include "i_login.html" %}
+		</div>
+		</div>
+	</div
+{%endblock%}

@@ -1,0 +1,26 @@
+.register{
+	width:450px;
+	height:350px;
+	border-radius: 20px;
+	overflow:hidden;
+	border: 1px solid #CECACA;
+}
+.register h2{
+	font-size: 25px;
+	font-weight: 300;
+	margin:10px 10px;
+	border-bottom:solid 1px #CCC;
+}
+.register form{
+	margin:0 10px;
+}
+.register .usernameinput,.pwd_input{
+	padding:8px;
+	margin-bottom:8px;
+	border-radius:3px;
+	width:50%;
+	margin-bottom:8px;
+	font-size:14px;
+	font-family:"微软雅黑","Hiragino Sans GB","宋体",Marlett,"Trebuchet MS",Verdana;
+}
+

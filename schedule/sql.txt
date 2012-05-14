@@ -1,0 +1,137 @@
+BEGIN;
+CREATE TABLE `app_calendar_calendartype` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `createdDate` date NOT NULL,
+    `createdTime` time NOT NULL,
+    `createdBy` varchar(30) NOT NULL,
+    `name` varchar(30) NOT NULL UNIQUE,
+    `calendarModelType` varchar(3)
+)
+;
+CREATE TABLE `app_calendar_activity` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `createdDate` date NOT NULL,
+    `createdTime` time NOT NULL,
+    `createdBy` varchar(30) NOT NULL,
+    `beginDate` date NOT NULL,
+    `beginTime` time NOT NULL,
+    `endDate` date NOT NULL,
+    `endTime` time NOT NULL,
+    `isWholeDay` bool NOT NULL,
+    `title` varchar(100) NOT NULL,
+    `content` longtext NOT NULL,
+    `calendarType_id` integer NOT NULL,
+    `isOutDate` bool NOT NULL,
+    `location` longtext NOT NULL
+)
+;
+ALTER TABLE `app_calendar_activity` ADD CONSTRAINT `calendarType_id_refs_id_31f180a` FOREIGN KEY (`calendarType_id`) REFERENCES `app_calendar_calendartype` (`id`);
+CREATE TABLE `app_calendar_todo` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `createdDate` date NOT NULL,
+    `createdTime` time NOT NULL,
+    `createdBy` varchar(30) NOT NULL,
+    `beginDate` date NOT NULL,
+    `beginTime` time NOT NULL,
+    `endDate` date NOT NULL,
+    `endTime` time NOT NULL,
+    `isWholeDay` bool NOT NULL,
+    `title` varchar(100) NOT NULL,
+    `content` longtext NOT NULL,
+    `calendarType_id` integer NOT NULL,
+    `priority` varchar(1) NOT NULL,
+    `nowPercent` integer NOT NULL,
+    `actuallyEndDate` date NOT NULL,
+    `actuallyEndTime` time NOT NULL,
+    `isFinished` bool NOT NULL,
+    `parentTodo_id` integer NOT NULL
+)
+;
+ALTER TABLE `app_calendar_todo` ADD CONSTRAINT `calendarType_id_refs_id_54f14af3` FOREIGN KEY (`calendarType_id`) REFERENCES `app_calendar_calendartype` (`id`);
+ALTER TABLE `app_calendar_todo` ADD CONSTRAINT `parentTodo_id_refs_id_6be55c95` FOREIGN KEY (`parentTodo_id`) REFERENCES `app_calendar_todo` (`id`);
+CREATE TABLE `app_calendar_reminder` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `createdDate` date NOT NULL,
+    `createdTime` time NOT NULL,
+    `createdBy` varchar(30) NOT NULL,
+    `beginDate` date NOT NULL,
+    `beginTime` time NOT NULL,
+    `endDate` date NOT NULL,
+    `endTime` time NOT NULL,
+    `isWholeDay` bool NOT NULL,
+    `title` varchar(100) NOT NULL,
+    `content` longtext NOT NULL,
+    `calendarType_id` integer NOT NULL
+)
+;
+ALTER TABLE `app_calendar_reminder` ADD CONSTRAINT `calendarType_id_refs_id_4769f62b` FOREIGN KEY (`calendarType_id`) REFERENCES `app_calendar_calendartype` (`id`);
+CREATE TABLE `app_calendar_calendartypeinclude` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `createdDate` date NOT NULL,
+    `createdTime` time NOT NULL,
+    `createdBy` varchar(30) NOT NULL,
+    `name` varchar(30) NOT NULL UNIQUE,
+    `user_id` integer NOT NULL,
+    `calendarModelType` varchar(3) NOT NULL
+)
+;
+ALTER TABLE `app_calendar_calendartypeinclude` ADD CONSTRAINT `user_id_refs_id_3f8b21ff` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
+CREATE TABLE `app_calendar_calendartypeexclude` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `createdDate` date NOT NULL,
+    `createdTime` time NOT NULL,
+    `createdBy` varchar(30) NOT NULL,
+    `user_id` integer NOT NULL,
+    `calendarType_id` integer NOT NULL
+)
+;
+ALTER TABLE `app_calendar_calendartypeexclude` ADD CONSTRAINT `calendarType_id_refs_id_870fd82` FOREIGN KEY (`calendarType_id`) REFERENCES `app_calendar_calendartype` (`id`);
+ALTER TABLE `app_calendar_calendartypeexclude` ADD CONSTRAINT `user_id_refs_id_ff30755` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
+CREATE TABLE `app_calendar_calendarbook` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `createdDate` date NOT NULL,
+    `createdTime` time NOT NULL,
+    `createdBy` varchar(30) NOT NULL,
+    `name` varchar(30) NOT NULL UNIQUE,
+    `user_id` integer,
+    `isPublic` bool NOT NULL
+)
+;
+ALTER TABLE `app_calendar_calendarbook` ADD CONSTRAINT `user_id_refs_id_5200270b` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
+CREATE TABLE `app_calendar_calendarbookpremission` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `createdDate` date NOT NULL,
+    `createdTime` time NOT NULL,
+    `createdBy` varchar(30) NOT NULL,
+    `calendarBook_id` integer NOT NULL,
+    `user_id` integer NOT NULL
+)
+;
+ALTER TABLE `app_calendar_calendarbookpremission` ADD CONSTRAINT `calendarBook_id_refs_id_69efcb3c` FOREIGN KEY (`calendarBook_id`) REFERENCES `app_calendar_calendarbook` (`id`);
+ALTER TABLE `app_calendar_calendarbookpremission` ADD CONSTRAINT `user_id_refs_id_166aa87c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
+CREATE TABLE `app_calendar_repeat` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `createdDate` date NOT NULL,
+    `createdTime` time NOT NULL,
+    `createdBy` varchar(30) NOT NULL,
+    `contentType_id` integer NOT NULL,
+    `contentId` integer UNSIGNED NOT NULL,
+    `intervalType` varchar(1) NOT NULL,
+    `interval` integer NOT NULL,
+    `week` integer NOT NULL,
+    `dayOfWeek` varchar(15) NOT NULL
+)
+;
+ALTER TABLE `app_calendar_repeat` ADD CONSTRAINT `contentType_id_refs_id_76eb0901` FOREIGN KEY (`contentType_id`) REFERENCES `django_content_type` (`id`);
+CREATE INDEX `app_calendar_activity_3b6fe67a` ON `app_calendar_activity` (`calendarType_id`);
+CREATE INDEX `app_calendar_todo_3b6fe67a` ON `app_calendar_todo` (`calendarType_id`);
+CREATE INDEX `app_calendar_todo_54c60e1a` ON `app_calendar_todo` (`parentTodo_id`);
+CREATE INDEX `app_calendar_reminder_3b6fe67a` ON `app_calendar_reminder` (`calendarType_id`);
+CREATE INDEX `app_calendar_calendartypeinclude_403f60f` ON `app_calendar_calendartypeinclude` (`user_id`);
+CREATE INDEX `app_calendar_calendartypeexclude_403f60f` ON `app_calendar_calendartypeexclude` (`user_id`);
+CREATE INDEX `app_calendar_calendartypeexclude_3b6fe67a` ON `app_calendar_calendartypeexclude` (`calendarType_id`);
+CREATE INDEX `app_calendar_calendarbook_403f60f` ON `app_calendar_calendarbook` (`user_id`);
+CREATE INDEX `app_calendar_calendarbookpremission_58447caf` ON `app_calendar_calendarbookpremission` (`calendarBook_id`);
+CREATE INDEX `app_calendar_calendarbookpremission_403f60f` ON `app_calendar_calendarbookpremission` (`user_id`);
+CREATE INDEX `app_calendar_repeat_7672908` ON `app_calendar_repeat` (`contentType_id`);
+COMMIT;

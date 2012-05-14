@@ -1,0 +1,109 @@
+﻿# Create your views here.
+from django.http import HttpResponse,HttpResponseRedirect
+from django.template import RequestContext,Context
+from django.shortcuts import render_to_response, get_object_or_404
+from django.utils import simplejson
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate,login
+from django.contrib.auth.models import User
+from tools import *
+from django.core.urlresolvers import reverse
+import time
+
+
+MIMETYPE = {'json':'application/json',}
+
+@login_required
+def base(request):
+	print 'base'
+	print request.user
+	week_day = ('星期天','星期一','星期二','星期三','星期四','星期五','星期六')
+	context = Context({
+		'week_day':week_day,
+	})
+	return render_to_response("calendar.html",context,context_instance=RequestContext(request))
+
+
+def loginRegister(request):
+	print "login"
+	context = Context()
+	return render_to_response("login.html",context,context_instance=RequestContext(request))
+	
+def getTime(request):
+
+	nowTime = time.strftime('%Y-%m-%d %X',time.localtime())
+	
+	return HttpResponse(simplejson.dumps({'message':nowTime}),mimetype='application/json')
+	
+def test(request):
+	print "test"
+	nowTime = time.strftime('%Y-%m-%d %X',time.localtime())
+	return HttpResponse(simplejson.dumps({'message':nowTime}),mimetype='application/json')
+	
+def auth(request):
+	"""
+	进行登录验证
+	"""
+	#获取用户名密码
+	username = request.POST['l_username']
+	password = request.POST['l_pwd']
+	nextUrl = request.POST['next']
+
+	return userLogin(request,username,password,nextUrl)
+
+def reg(request):
+	"""
+	进行用户注册
+	"""
+	#获取登录名
+	username = request.POST['r_username']
+	password = request.POST['r_pwd']
+	passwordConfirm = request.POST['r_pwd_confirm']
+	nextUrl = request.POST['next']
+	#进行用户名和密码的检查
+	ifUsernameValid = testUsername(username)
+	ifPasswordValid = testPassword(password,passwordConfirm)
+	
+	if ifUsernameValid is not "":
+		json = getJson(result='fail',message=ifUsernameValid,type="username")
+	elif ifPasswordValid is not "":
+		json = getJson(result='fail',message=ifPasswordValid,type="password")
+	elif testUserExist(username) is True:
+		json = getJson(result='fail',message="userExist",type="username")
+	else:
+		user = User.objects.create_user(username,username,password)
+		user.save()
+	
+	return userLogin(request,username,password,nextUrl)
+	
+def userLogin(request,username,password,nextUrl=None):
+	"""
+	进行用户验证及登录的操作，如果不成功
+	"""
+	
+	#验证用户名及密码
+	ifUsernameValid = testUsername(username)
+	ifPasswordValid = testPassword(password)
+	#验证各种信息
+	if ifUsernameValid is not "":
+		json = getJson(result='fail',message=ifUsernameValid,type="username")
+	elif ifPasswordValid is not "":
+		json = getJson(result='fail',message=ifPasswordValid,type="password")
+	elif testUserExist(username) is not True:
+		json = getJson(result='fail',message='userNotExist',type="username")
+	else:
+		user = authenticate(username=username,password=password)
+		if user is not None:
+			if user.is_active:
+				login(request,user)
+				if nextUrl != "" and nextUrl is not None:
+					json = getJson(result="success",message=nextUrl,type="url")
+				else:
+					json = getJson(result="success",message='/admin',type="url")
+			else:
+				json = getJson(result='fail',message='userNotActive',type='username')
+		else:
+			json = getJson(result='fail',message='passwordIncorrect',type='pwd')
+	
+	return HttpResponse(json,mimetype=MIMETYPE['json'])
+	

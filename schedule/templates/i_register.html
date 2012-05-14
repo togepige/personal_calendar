@@ -1,0 +1,50 @@
+<div id="register" class="">
+	<h2 class="form-title">欢迎您的加入</h2>
+	<form id="register-form" method="post" action="/calendar/reg" autocomplete="off" class="form-horizontal custom-form-left">
+		{% csrf_token %}
+		<input type="hidden" name="next"></input>
+		<div class="control-group">
+			<label class="control-label">Email地址</label>
+			<div class="controls">
+				<input name="username" type="email" class="email-helper span3" autofocus="autofocus"></input>
+				<p class="help-block">请输入您常用的email地址</p>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">密码</label>
+			<div class="controls">
+				<input name="password" type="password" class="span3"></input>
+				<p class="help-block">密码长度为4~30个字符，必须为英文字母+数字+标点的组合</p>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">重复密码</label>
+			<div class="controls">
+				<input name="password-confirm" type="password" class="span3"></input>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">滑动解锁</label>
+			<div class="controls">
+				<div class="slider slider-locker"></div>
+			</div>
+		</div>
+		<div id="register-alert" class="alert alert-block alert-error hide-self c-hidden">
+			<a class="close" close="#register-alert" href="#">x</a>
+			<span class="alert-content"></span>
+		</div>
+		
+		<div class="control-group">
+			<div class="controls">
+				<input type="image" name="submit" value="提交" src="{{ STATIC_URL }}img/btn_register.gif"></input>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">已有账号？<a href="/calendar/login">登录</a></label>
+		</div>
+	</form>
+</div>
+			
+			
+			

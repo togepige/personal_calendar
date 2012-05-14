@@ -1,0 +1,77 @@
+{% load shortcutTags %}
+<!DOCTYPE HTML>
+<html>
+<head>
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui-1.8.18.custom.css" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-responsive.css" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/modal.css" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/form.css" />
+	{% block css %}{% endblock %}
+</head>
+<body>
+	<div class="alert alert-info c-hidden" id="title-info">
+		<a class="close" close="#title-info">×</a>
+		<strong></strong><span><span>
+	</div>
+	<div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</a>
+			<a class="brand" href="/calendar">Your Calendar</a>
+			{% block navbar %}
+			{% endblock %}
+        </div>
+      </div>
+    </div>
+	
+	<div class="container-fluid">
+		{% block main%}{% endblock %}
+	</div>
+	
+	<!-- 将脚本放置在网页最后，加快加载速度-->
+	<script src="{{ STATIC_URL }}scripts/jquery-1.7.1.min.js"></script>
+	<script src="{{	STATIC_URL }}scripts/jquery-ui-1.8.18.custom.min.js"></script>
+	<script src="{{	STATIC_URL }}scripts/urlquery.js"></script>
+	<script src="{{	STATIC_URL }}scripts/jquery.validate.min.js"></script>
+	<script src="{{ STATIC_URL }}scripts/message_zh_cn.js"></script>
+	<script src="{{	STATIC_URL }}scripts/headbar.js"></script>
+	<script src="{{	STATIC_URL }}scripts/less.js"></script>
+	<script src="{{ STATIC_URL }}scripts/jquery.mousewheel.js"></script>
+	
+	
+    <script src="{{ STATIC_URL }}scripts/google-code-prettify/prettify.js"></script>
+    <script src="{{ STATIC_URL }}scripts/bootstrap-transition.js"></script>
+    <script src="{{ STATIC_URL }}scripts/bootstrap-alert.js"></script>
+    <script src="{{ STATIC_URL }}scripts/bootstrap-modal.js"></script>
+    <script src="{{ STATIC_URL }}scripts/bootstrap-dropdown.js"></script>
+    <script src="{{ STATIC_URL }}scripts/bootstrap-scrollspy.js"></script>
+    <script src="{{ STATIC_URL }}scripts/bootstrap-tab.js"></script>
+    <script src="{{ STATIC_URL }}scripts/bootstrap-tooltip.js"></script>
+    <script src="{{ STATIC_URL }}scripts/bootstrap-popover.js"></script>
+    <script src="{{ STATIC_URL }}scripts/bootstrap-button.js"></script>
+    <script src="{{ STATIC_URL }}scripts/bootstrap-collapse.js"></script>
+    <script src="{{ STATIC_URL }}scripts/bootstrap-carousel.js"></script>
+    <script src="{{ STATIC_URL }}scripts/bootstrap-typeahead.js"></script>
+	<script src="{{ STATIC_URL }}scripts/application.js"></script>
+	
+	<script src="{{	STATIC_URL }}scripts/jquery.form.js"></script>
+	<script src="{{	STATIC_URL }}scripts/json2.js"></script>
+	<script src="{{ STATIC_URL }}scripts/date.js"></script>
+	<script src="{{ STATIC_URL }}scripts/moment.js"></script>
+	<script src="{{ STATIC_URL }}scripts/zh-cn.js"></script>
+	<script src="{{ STATIC_URL }}scripts/base.js"></script>
+	<script src="{{ STATIC_URL }}scripts/timezone.js"></script>
+	<script src="{{ STATIC_URL }}scripts/date-zh-cn.js"></script>
+	<script src="{{ STATIC_URL }}scripts/modal.js"></script>
+	<script src="{{ STATIC_URL }}scripts/form.js"></script>
+	<script src="{{ STATIC_URL }}scripts/object.js"></script>
+	<script src="{{ STATIC_URL }}scripts/array-extend.js"></script>
+	<script src="{{ STATIC_URL }}scripts/global-setting.js"></script>
+	{% block js %}{% endblock %}
+</body>

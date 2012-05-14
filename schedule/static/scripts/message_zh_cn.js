@@ -1,0 +1,32 @@
+﻿//定义中文消息
+var cnmsg = {
+	serverError:"服务器错误，请稍候重试",
+	unlock:"还未解锁",
+	userNotExist:"用户不存在",
+	userExist:"用户已存在",
+	passwordWrong:"密码不正确",
+	passwordNotEqual:"两次密码不相等",
+	tooShort: jQuery.format("长度过长"),
+    tooLong: jQuery.format("长度过短"),
+	notEmail: "不为Email",
+	userExist:"用户已存在",
+	userNotActive:"用户已冻结",
+    required: "还没输入呢",
+    remote: "请修正该字段",
+    email: "不为Email",
+    url: "地址不正确",
+    date: "日期不合法",
+    dateISO: "日期不合法",
+    number: "请输入数字哦",
+    digits: "请输入数字哦",
+    creditcard: "请输入合法的信用卡号",
+    equalTo: "两次输入不同呢",
+    accept: "请输入拥有合法后缀名的字符串",
+    maxlength: jQuery.format("长度过长"),
+    minlength: jQuery.format("长度过短"),
+    rangelength: jQuery.format("长度不符合要求"),
+    range: jQuery.format("不符合范围要求"),
+    max: jQuery.format("请输入一个最大为 {0} 的值"),
+    min: jQuery.format("请输入一个最小为 {0} 的值")
+};
+jQuery.extend(jQuery.validator.messages, cnmsg);

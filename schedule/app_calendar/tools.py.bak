@@ -1,0 +1,51 @@
+﻿from django.utils import simplejson
+from django.contrib.auth.models import User
+from django.core.validators import email_re,EmailValidator
+
+import time
+import re
+
+emailValidator = EmailValidator(email_re)
+def getJson(**args):
+	result = {}
+	for key,value in args.items():
+		result[key] = value
+	return simplejson.dumps(result)
+	
+def testUserExist(username):
+	"""
+	此函数用来测试用户的用户名和密码的相关信息
+	返回值及含义:
+	"""
+	try:
+		u = User.objects.get(username__exact=username)
+	except User.DoesNotExist:
+		return False
+	
+	return True
+
+def testUsername(username):
+	
+	if len(username)<4:
+		return 'minlength'
+	elif len(username)>30:
+		return 'maxlength'
+	#测试Email是否合法
+	try:
+		emailValidator(username)
+	except:
+		return "email"
+	
+	return ""
+	
+def testPassword(password,passwordConfirm=None):
+	if len(password)<4:
+		return "minlength"
+	elif len(password)>30:
+		return "maxlength"
+	elif passwordConfirm is not None:
+		if password != passwordConfirm:
+			return "equalTo"
+	
+	return ""
+	

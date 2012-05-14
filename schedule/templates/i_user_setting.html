@@ -1,0 +1,265 @@
+<div class="calendar-menu">
+	<button id="user-setting-nav-save" class="btn btn-large btn-primary">保存</button>
+	<button id="user-setting-nav-back" class="btn btn-large">返回</button>
+</div>
+
+
+<ul id="user-setting-tab-nav" class="nav nav-tabs">
+	<li><a data-target="#base-setting"  data-toggle="tab">基本设置</a></li>
+	<li><a data-target="#calendar-manage"  data-toggle="tab">日历管理</a></li>
+</ul>
+
+<div id="user-setting-tab" class="tab-content">
+	<div id="base-setting" class="tab-pane active">
+		<form id="base-setting-form" class="form-horizontal custom-form-left" method="post" action="/calendar/update/user-setting">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">每周开始于</label>
+					<div class="controls">
+						<select name="first-day-of-week">
+							<option value="0">周天</option>
+							<option value="1">周一</option>
+						<select>
+					</div>
+				</div>
+				<div class="form-actions">
+					<button id="base-setting-submit" type="submit" class="btn btn-primary">保存</button>
+				</div>
+			</fieldset>
+		</form>	
+	</div>
+	<div id="calendar-manage" class="tab-pane span10">
+		<div id="calendar-book-broswer" class="active" container-group="calendar-manage" container-index='1'>
+			<h3 class="c-header">修改您的日历本</h3>
+			<div class="calendar-menu">
+				<button id="calendar-book-nav-new" class="btn btn-primary">新建</button>
+				<button id="calendar-book-nav-import" class="btn btn-primary">导入其他日历</button>
+			</div>
+			<h5 class="c-header">我的日历</h5>
+			<table id="user-setting-calendar-book" class="table table-striped">
+				<thead>
+					<tr>
+						<td>日历本</td>
+						<td>创建人</td>
+						<td>是否显示</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			
+			<hr />
+			<h5 class="c-header">我订阅的日历</h5>
+			<table id="calendar-book-subscribe-table" class="table table-striped">
+				<thead>
+					<tr>
+						<td>日历本</td>
+						<td>创建人</td>
+						<td>是否显示</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			
+		</div>
+		<div id="calendar-book-detail" class="c-hidden" container-group="calendar-manage" container-index='2'>
+			<h3 class="calendar-book-action-title c-header"></h3>
+			<form id="calendar-book-detail-form" class="form-horizontal">
+				<fieldset>
+					<div class="controls-group">
+						<label class="control-label">日历本名称</label>
+						<div class="controls">
+							<input name="name"type="text" class="span4" placeholder="无标题"></input>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">创建者</label>
+						<div class="controls">
+							<p name="createby" class="help-inline">cyfloel0516@gamil.com</p>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">说明</label>
+						<div class="controls">
+							<textarea name="introduction" class="span4" rows="3"></textarea>
+						</div>
+					</div>
+					<div class="form-actions">
+						<button id="calendar-book-detail-submit" type="button" class="btn btn-primary">保存</button>
+						<button id="calendar-book-detail-back" type="button" class="btn">放弃</button>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		
+		
+		<div id="calendar-book-import" class="c-hidden" container-group="calendar-manage" container-index="2">
+			<h3 class="c-header">导入其他日历</h3>
+			<div class="calendar-menu">
+				<button class="btn btn-cancel">返回</button>
+			</div>
+			
+			<h5>选择导入方式</h5>
+			<table>
+				<tbody>
+					<tr><td><a id="calendar-book-import-subscribe">导入朋友的日历</a></td></tr>
+					<tr><td><a id="calendar-book-import-google">导入Google日历</a></td></tr>
+					<tr><td><a id="calendar-book-import-public">导入公共日历</a></td></tr>
+				</tbody>
+			</table>
+		</div>
+		
+		
+		<div id="calendar-book-auth" class="c-hidden" container-group="calendar-manage" container-index='2'>
+			<h3 class="c-header">日历本共享设置</h3>
+			<div class="calendar-menu">
+				<button class="btn btn-primary btn-save">保存</button>
+				<button class="btn btn-cancel">取消</button>
+			</div>
+			<form id="calendar-book-auth-form" class="form-horizontal">
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label">是否公开日历</label>
+						<div class="controls">
+							<label class="checkbox">
+								<input name="is-public" type="checkbox">
+								加入公开日历本内，可供所有人搜索并且查看
+								</input>
+							</label>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">指定与谁分享</label>
+						<div class="controls">
+							<div class="input-append">
+								<input name="username" type="text" class="span4" placeholder="想要与谁共享？请输入对方Email"></input>
+								<select name="calendar-book-premission" class="span2">
+									<option value="0">查看所有活动</option>
+									<option value="1">进行活动管理</option>
+								</select>
+								<button id="calendar-book-auth-new" class="btn" type="button">添加</button>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+			<div class="">
+				<table id="calendar-book-auth-table" class="table table-striped"> 
+					<thead>
+						<tr>
+							<td>共享用户</td>
+							<td>权限</td>
+							<td>操作</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr><td colspan="20">无</td></tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="calendar-menu">
+				<button class="btn btn-primary btn-save">保存</button>
+				<button class="btn btn-cancel">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="calendar-book-subscribe-modal" class="modal middle-modal c-hidden">
+	<div class="modal-header">
+		<a class="close modal-close" close="#calendar-book-subscribe-modal">×</a>
+		<h3>添加与您共享的日历</h3>
+	</div>
+	<div class="modal-body">
+		<form class="form-horizontal" auto-complete="off">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">对方的email地址</label>
+					<div class="controls">
+						<input name="username" type="text" class="span3"></input>
+						<p class="help-block">如果对方有授权于您共享他的日历本，则完成后会自动订阅这些日历本。若没有与您共享，则不会产生任何订阅。</p>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+	
+	<div class="modal-footer">
+		<button class="btn-cancel btn hide-self">取消</button>
+		<button class="btn btn-primary hide-self btn-ok">订阅</button>
+	</div>
+</div>
+
+<div id="calendar-book-public-subscribe-modal" class="modal middle-modal c-hidden">
+	<div class="modal-header">
+		<a class="close modal-close" close="#calendar-book-public-subscribe-modal">×</a>
+		<h3>公共日历</h3>
+	</div>
+	
+	<div class="modal-body">
+		<table id="public-calendar-book-table" class="table">
+			<tbody>
+				
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="modal-footer">
+		<ul class="pager left">
+			<li>
+				<a href="#">&larr; 前一页</a>
+			</li>
+			<li>
+				<a href="#">后一页 &rarr;</a>
+			</li>
+		</ul>
+		<button class="btn-cancel btn hide-self">关闭</button>
+	</div>
+</div>
+
+<div id="user-setting-template" class="template">
+	<table>
+		<tr class="calendar-book-row">
+			<td class="calendar-book-name"><a></a></td>
+			<td class="calendar-book-createby"></td>
+			<td class="calendar-book-show"><input type="checkbox"></input></td>
+			<td>
+				<a class="calendar-book-auth-setting">共享设置</a>
+				<a class="calendar-book-delete" href="#">删除</a>
+			</td>
+		</tr>
+		
+		<tr class="calendar-book-subscribe-row">
+			<td class="calendar-book-name"><a></a></td>
+			<td class="calendar-book-createby"></td>
+			<td class="calendar-book-show"><input type="checkbox"></input></td>
+			<td>
+				<a class="calendar-book-subscribe-delete">取消订阅</a>
+			</td>
+		</tr>
+		
+		<tr class="calendar-book-auth-row">
+			<td class="auth-username"></td>
+			<td>
+				<select class="auth-premission" class="span2">
+					<option value="0">查看所有活动</option>
+					<option value="1">进行活动管理</option>
+				</select>
+			</td>
+			<td>
+				<a class="auth-delete">删除</a>
+			</td>
+		</tr>
+		
+		<tr class="public-calendar-book-row">
+			<td class="calendar-book-name"></td>
+			<td class="action">
+				<a class="subscribe">订阅</a>
+				<a class="de-subscribe c-hidden">取消订阅</a>
+			</td>
+		</tr>
+	</table>
+</div>
