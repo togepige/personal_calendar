@@ -686,13 +686,8 @@ Calendar.prototype.clearMonth = function(){
 /*****************************************************
 *根据指定月份，从服务器获取活动列表并储存
 *****************************************************/
-Calendar.prototype.getActivity = function(option){
-	var optionDefault = {forceUpdate:false,repeat:false};
-	if(!isUndefined(option)){
-		option = $.extend(optionDefault,option)
-	}else{
-		option = optionDefault;
-	}
+Calendar.prototype.getActivity = function(date){
+
 	var dates = [];
 	var calendar = this;
 	var monthId = this._calendarDate.getMonthId();
@@ -717,7 +712,6 @@ Calendar.prototype.getActivity = function(option){
 		return false;
 	}
 	
-	// sortActivity(this._activityCache);
 	this.cacheActivity(this._activity);
 	this._activityCacheList[monthId] = true;
 }

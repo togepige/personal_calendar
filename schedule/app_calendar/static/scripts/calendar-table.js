@@ -1,15 +1,17 @@
-﻿CalendarTable = {};
-CalendarTable.$emptyRow = $('<tr class="empty-row"><td colspan="20">无</td></tr>');
+﻿Tables = {};
+Tables.func = {};
+Tables.$ = {};
+Tables.$.emptyRow = $('<tr class="empty-row"><td colspan="20">无</td></tr>');
 /*****************************************************
 *简单的展示数据至表格的方法
 *****************************************************/
-CalendarTable.showData = function($table,$trTemplate,data,mapping,extend){
+Tables.func.showData = function($table,$trTemplate,data,mapping,extend){
 	var $tbody = $table.find("tbody:first");
 	var colNum = mapping.length;
 	var i=0,j=0;
 	$tbody.empty();
 	if(data.length == 0){
-		$tbody.append(CalendarTable.$emptyRow.clone().attr('colspan',colNum+5));
+		$tbody.append(Tables.$.emptyRow.clone().attr('colspan',colNum+5));
 	}
 	
 	//将每一个数据对象根据映射条件显示在界面上
@@ -21,7 +23,7 @@ CalendarTable.showData = function($table,$trTemplate,data,mapping,extend){
 			var trueArray = [];
 			var listMapping = null;
 			if(m.dataField != null){
-				dataValue = getObjectField(data[i],m.dataField);
+				dataValue = Objects.func.getObjectField(data[i],m.dataField);
 			}
 			
 			var tdClass = m.tdClass;

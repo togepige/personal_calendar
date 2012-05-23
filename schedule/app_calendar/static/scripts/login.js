@@ -15,7 +15,7 @@ Calendar.auth.ajaxOption = {
 	beforeSerialize:function($form,options){
 		//检查是否解锁
 		if(Calendar.auth.isUnlocked($form) == false){
-			Calendar.tools.showInfo($form.find(".alert"),cnmsg.unlock);
+			Tools.showInfo($form.find(".alert"),cnmsg.unlock);
 			return false;
 		}
 		// 获取下一步所要跳转的URL，因为这个URL放置在GET参数中
@@ -33,11 +33,11 @@ Calendar.auth.ajaxOption = {
 			return true;
 		}
 		else{
-			Calendar.tools.showInfo(Calendar.auth.$form.find(".alert"),cnmsg[data['message']]);
+			Tools.showInfo(Calendar.auth.$form.find(".alert"),cnmsg[data['message']]);
 		}
 	},
 	error:function(){
-			Calendar.tools.showTitleInfo(cnmsg['serverError']);
+			Tools.showTitleInfo(cnmsg['serverError']);
 	},
 }
 
@@ -69,14 +69,19 @@ $(document).ready(function(){
 	$("#register-form").ajaxForm(Calendar.auth.ajaxOption);
 	
 	
-	$("#typehelper").autocomplete({
+	$("[type='email'],.email").autocomplete({
 		source:function(request,response){
 			var results = [];
 			results.push(request.term+"@qq.com");
+			results.push(request.term+"@gmail.com");
 			results.push(request.term+"@163.com");
+			results.push(request.term+"@126.com");
+			results.push(request.term+"@sina.com");
+			results.push(request.term+"@sohu.com");
 			response(results);
 		},
 	});
+	
 	$("#typehelper").bind("autocompletesearch", function(event, ui){
 		console.log(event);
 	});
@@ -102,25 +107,7 @@ function setMessage(message){
 	var passwordElements = $(gFormId.jqString() + " :password");
 	passwordElements.val("");
 	usernameElement.focus();
-	// if(gFormId.name == "login-form"){
-		// if(errorType == "username"){
-			// usernameElement.focus();
-		// }
-		// else if(errorType == "password"){
-			// passwordElements.eq(0).html("");
-			// passwordElements.eq(0).focus();
-		// }
-	// }
-	// else if(gFormId == "register-form"){
-		// if(errorType == "username"){
-			// usernameElement.focus();
-		// }
-		// else if(errorType == "password"){
-			// passwordElements.eq(0).html("");
-			// passwordElements.eq(1).html("");
-			// passwordElements.eq(0).focus();
-		// }
-	// }
+
 	$(gFormId.jqString() + " .alert span:first").html(cnmsg[errorMessage]);
 	$(gFormId.jqString() + " .alert").show();
 }

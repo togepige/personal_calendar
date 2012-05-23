@@ -105,7 +105,14 @@ class Activity(CalendarBase):
 	location = models.TextField(null=True,blank=True)
 	repeat = models.OneToOneField('Repeat',null=True,blank=True)
 	
-	
+	def save(self,*args,**kwargs):
+		if self.endDateTime is None:
+			self.endDateTime = self.beginDateTime
+			
+		if self.beginDateTime > self.endDateTime:
+			return False
+			
+		super(Activity,self).save(*args,**kwargs)	
 	
 class ActivityPremission(ModelBase):
 	"""活动权限类，表示所要通知的人员信息

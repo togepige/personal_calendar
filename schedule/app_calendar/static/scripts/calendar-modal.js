@@ -1,11 +1,18 @@
-Calendar.modal._$simpleEditModal = $("#simple-edit-modal");
-Calendar.modal._$activityBroswer = $("#calendar-activity-broswer");
+锘緾alendar.modal = {};
+Calendar.modal.func = {};
+Calendar.modal.$ = {};
+Calendar.modal.$.simpleEditModal = $("#simple-edit-modal");
+Calendar.modal.$.activityBroswer = $("#calendar-activity-broswer");
 
 /*****************************************************
-*显示简单编辑的窗口
+*鏄剧ず绠�鍗曠紪杈戠殑绐楀彛
 *****************************************************/
-Calendar.modal.showSimpleEdit = function(calendar,act,$position){
-	var $modal = $("#simple-edit-modal");
+Calendar.modal.func.showSimpleEdit = function(act,$position){
+	var canEdit = Calendar.activity.func.canEdit(act);
+	Calendar.modal.setEditModal(canEdit);
+	
+	var $modal = Calendar.modal.$.simpleEditModal;
+	
 	var $form = $modal.find("form:first");
 	
 	var beginDateTime = new TimeZoneDate(act.fields.beginDateTime);
@@ -39,13 +46,13 @@ Calendar.modal.showSimpleEdit = function(calendar,act,$position){
 
 
 /*****************************************************
-*显示modal来展示特定的活动列表
+*鏄剧ずmodal鏉ュ睍绀虹壒瀹氱殑娲诲姩鍒楄〃
 *****************************************************/
-Calendar.modal.showActivityBroswer = function(calendar,beginDate,endDate){
-	var acts = getActivityByDate(calendar._activityCache,beginDate,endDate);
+Calendar.modal.func.showActivityBroswer = function(beginDate,endDate){
+	var acts = Calendar.activity.func.getActivityByDate(beginDate,endDate);
 	var $broswer = $("#calendar-activity-broswer");
 	var $actTable = $broswer.find("table:first");
-	var $trTemplate = Calendar.$t_trEventBroswer;
+	var $trTemplate = Calendar.view.$.eventBroswerRowTemplate;
 	$actTable.html("");
 	for(var i=0;i<acts.length;i++){
 		var $tr = $trTemplate.clone();
@@ -61,4 +68,18 @@ Calendar.modal.showActivityBroswer = function(calendar,beginDate,endDate){
 		$actTable.append($tr);
 	}
 	showModal($broswer);
+}
+
+Calendar.modal.setEditModal = function(canEdit){
+	var $modal = Calendar.modal.$.simpleEditModal;
+	if(canEdit == true){
+		$modal.find(".modal-title").text("娲诲姩淇敼");
+		$modal.find(".activity-delete,.edit-detail,#simple-update").show();
+		$modal.find(".btn-close").hide();
+	}
+	else{
+		$modal.find(".modal-title").text("娲诲姩鏌ョ湅");
+		$modal.find(".activity-delete,.edit-detail,#simple-update").hide();
+		$modal.find(".btn-close").show();
+	}
 }

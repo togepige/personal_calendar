@@ -319,9 +319,7 @@ UserSetting.getCalendarBookAuths = function(bookId){
 		return UserSetting.calendarBookAuths.data[bookId];
 	
 	var books = [];
-	// for(var i=0;i<gRequiredInfo.book.length;i++){
-		// books.push(gRequiredInfo.book[i].pk);
-	// }
+
 	books.push(bookId);
 	
 	$.ajax({url:"/calendar/get/calendarbook/auth",

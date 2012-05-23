@@ -49,9 +49,11 @@ function TimeZoneDate(d){
 	}
 	else{
 		var len = d.length;
-		if(len > 19){
+		if(len >= 19){
 			this._pureDate = d.substring(0,19);
 			this._timeZoneOffset = TimeZoneDate.getTimeZoneFromISO(d);
+			if(this._timeZoneOffset == "")
+				this._timeZoneOffset = "+00:00";
 			needConvert = true;
 		}
 		else if(len == 10){
@@ -70,10 +72,12 @@ function TimeZoneDate(d){
 			return null;
 		}
 	}
-	if(needConvert){
+	
+	if(needConvert && TimeZoneDate._publicOffset != ""){
 		this.asTimeZone(TimeZoneDate._publicOffset);
 	}
 	
+
 	return this;
 }
 TimeZoneDate.compare = function(d1,d2){
@@ -136,7 +140,7 @@ TimeZoneDate.dealWithOffset = function(offset){
 }
 
 TimeZoneDate.dayBetween = function(one,two){
-	return (new TimeZoneDate(two).date() - new TimeZoneDate(one).date()) / 86400000;
+	return Math.floor((new TimeZoneDate(two).date() - new TimeZoneDate(one).date()) / 86400000);
 }
 TimeZoneDate.initTimeZoneOffset = function(offset){
 	if(offset.length == 5)

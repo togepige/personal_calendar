@@ -2,6 +2,13 @@
 var gRequiredInfo = {};
 var gCalendar;
 var UserSetting = {};
+
+//新版Calendar js
+var Calendar = {};
+Calendar.View = {};
+Calendar.UserSetting = {};
+
+
 $(document).ready(function(){
 
 	getRequiredInfo();
@@ -56,10 +63,9 @@ function getRequiredInfo(){
 	}else{
 		for(var key in data){
 			gRequiredInfo[key] = data[key];
-			
 		}
-		
 		UserSetting.data = data['userSetting'];
+		Calendar.UserSetting = data['userSetting'];
 		// initUserTimeZone(requiredInfo['tzOffset']);
 		TimeZoneDate.initTimeZoneOffset(gRequiredInfo['tzOffset']);
 	}
@@ -144,7 +150,6 @@ function setLeftNavCalendarBook(){
 			$book.find(".book-icon").addClass("icon-ok-sign");
 			$("#nav-subscribe").append($book);
 		}
-		
 	}
 }
 

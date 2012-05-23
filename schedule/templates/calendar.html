@@ -7,12 +7,18 @@
 {% endblock %}
 
 {% block js %}
-	<script src="{{ STATIC_URL }}scripts/calendar.js"></script>
+	<script src="{{ STATIC_URL }}scripts/calendar-new.js"></script>
+	<script src="{{ STATIC_URL }}scripts/calendar-view.js"></script>
+	<script src="{{ STATIC_URL }}scripts/calendar-modal.js"></script>
+	<script src="{{ STATIC_URL }}scripts/calendar-user-setting.js"></script>
+	<script src="{{ STATIC_URL }}scripts/calendar-table.js"></script>
+	<!--
 	<script src="{{ STATIC_URL }}scripts/calendar-plugin.js"></script>
 	<script src="{{ STATIC_URL }}scripts/calendar-detail.js"></script>
 	<script src="{{ STATIC_URL }}scripts/calendar-modal.js"></script>
 	<script src="{{ STATIC_URL }}scripts/user-setting.js"></script>
 	<script src="{{ STATIC_URL }}scripts/calendar-table.js"></script>
+	-->
 {% endblock %}
 
 {% block navbar %}
@@ -22,8 +28,8 @@
 	  <li class="active"><a id="to-calendar">日历主页</a></li>
 	  <li class="active"><a id="to-user-setting">个人设置</a></li>
 	</ul>
-	<form class="navbar-form pull-left">
-		<input type="text" class="search-query span2" placeholder="搜索"/>
+	<form id="calendar-search-form" class="navbar-form pull-left">
+		<input name="search-content" type="text" class="search-query span2" placeholder="搜索"/>
 	</form>
 	
 	<ul class="nav pull-right">

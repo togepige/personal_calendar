@@ -1,7 +1,7 @@
 {% load shortcutTags %}
-<div class="calendar">
+<div id="calendar-view" class="calendar" container-group="calendar-view" container-index="1">
 	{% include "i_calendar_head.html" %}
-	<div class="d-month">
+	<div id="calendar-view-month" class="d-month active" container-group="calendar-view-type" container-index="1">
 		<div class="d-month-head">
 			<table class="t-month-head">
 				<tbody>
@@ -83,7 +83,7 @@
 <div id="simple-edit-modal" class="modal middle-modal c-hidden activity-form-container">
 	<div class="modal-header">
 		<a class="close modal-close" close="#simple-edit-modal">×</a>
-		<h3>活动修改</h3>
+		<h3 class="modal-title">活动修改</h3>
 	</div>
 	<div class="modal-body">
 		<form class="form-horizontal custom-form-left" autocomplete="off" id="simple-edit-form" method="post" action="/calendar/update/activity/detail">
@@ -111,9 +111,10 @@
 		</form>
 	</div>
 	<div class="modal-footer">
-		<button id="simple-delete" class="activity-detail hide-modal btn btn-danger left">删除</input>
+		<button id="simple-delete" class="activity-delete hide-modal btn btn-danger left">删除</input>
 		<button class="edit-detail btn hide-modal">编辑详细</button>
 		<button id="simple-update" class="btn btn-primary hide-modal">保存</button>
+		<button  class="btn btn-primary hide-modal c-hidden btn-close">关闭</button>
 	</div>
 </div>
 

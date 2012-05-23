@@ -31,6 +31,7 @@ def getDefaultActivityBook(user,calendarBook=None):
 def getCalendarBook(user,calendarModelType):
 	"""	获得指定类型的用户的所有日历本
 	"""
+	print 'getCalendarBook'
 	if user is None:
 		return None
 	#获取用户自身的日历本
@@ -38,16 +39,10 @@ def getCalendarBook(user,calendarModelType):
 							.order_by('-isDefault','-createDateTime')
 	
 	if calendarBooks.count() == 0:
+		print 'not default'
 		return getDefaultActivityBook(user)
 	
-	otherBooks = []
-	#取出其相关联的日历
-	# premissions = user.calendarbookpremission_set.all()
-	
-	# for p in premissions:
-		# otherBooks.append(p.calendarBook)
-	
-	books = list(calendarBooks) + list(otherBooks)
+	books = list(calendarBooks)
 	
 	return books
 
@@ -110,27 +105,15 @@ def updateActivity(user,actObj=None,**args):
 			act.beginDateTime = TimeZoneHelper().toUTC( \
 									parse(actObj.get('beginDateTime',act.beginDateTime)) \
 								)
-	else:
-		if act.id is None:
-			print 2.1
-			return None
-	
+
 
 	if 'endDateTime' in actObj and isUndefined(actObj['endDateTime']) is False:
-		act.isWholeDay = False
 		if isinstance(actObj['endDateTime'],datetime):
 			act.endDateTime = actObj.get('endDateTime',act.endDateTime)
 		else:
 			act.endDateTime = TimeZoneHelper().toUTC( \
 								parse(actObj.get('endDateTime',act.endDateTime)) \
 							)
-	else:
-		act.endDateTime = act.beginDateTime
-		print 2.2
-	
-	if act.beginDateTime > act.endDateTime:
-		print 2.3
-		return None
 	
 	print 3
 	if 'isWholeDay' in actObj:

@@ -1,5 +1,5 @@
 ﻿var Calendar = {};
-Calendar.tools = {};
+Tools = {};
 var SUCCESS = 'success';
 var UNDEFINED = 'undefined';
 var FAIL = 'fail';
@@ -249,16 +249,16 @@ function getShort(str,len){
 	}
 }
 
-function toPercent(num){
+Tools.toPercent = function(num){
 	return (num * 100) + '%';
 }
 
-Calendar.tools.showInfo = function($div,info,seconds){
+Tools.showInfo = function($div,info,seconds){
 	$div.find(".alert-content").text(info);
 	$div.show();
 }
 
-Calendar.tools.showTitleInfo = function(info,seconds){
+Tools.showTitleInfo = function(info,seconds){
 	showTitleInfo(isUndefined(seconds)?-1:seconds,info)
 }
 

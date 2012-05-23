@@ -1,6 +1,8 @@
-CalendarObject = {};
+Objects = {};
+
+Objects.func = {};
 //默认比较函数
-CalendarObject.compare = function(obj1,obj2,fields){
+Objects.func.compare = function(obj1,obj2,fields){
 	var val1 = getObjectField(obj1,fields);
 	var val2 = getObjectField(obj2,fields);
 	if(val1 == val2)
@@ -9,6 +11,13 @@ CalendarObject.compare = function(obj1,obj2,fields){
 		return 1;
 	else
 		return -1;
+}
+
+Objects.getObjectInArray = function(objs,field,val,isMultiple){
+	return getObjectInArray(objs,field,val,isMultiple);
+}
+Objects.func.getObjectInArray = function(objs,field,val,isMultiple){
+	return getObjectInArray(objs,field,val,isMultiple);
 }
 
 function getObjectInArray(objs,field,val,isMultiple){
@@ -61,14 +70,20 @@ function getObjectField(obj,field){
 	var fieldArray = field.split(".");
 	var nowLevel = obj;
 	for(var i=0;i<fieldArray.length;i++){
-		nowLevel = nowLevel[fieldArray[i]];
+		if(!isUndefined(nowLevel[fieldArray[i]]))
+			nowLevel = nowLevel[fieldArray[i]];
+		else
+			break;
 	}
 	return nowLevel;
+}
+Objects.func.getObjectField = function(obj,field){
+	return getObjectField(obj,field);
 }
 /*****************************************************
 *判断一个对象是否符合过滤条件
 *****************************************************/
-function isObjectShouldBeFilter(obj,filter){
+Objects.isObjectShouldBeFilter = function(obj,filter){
 	for(var i=0;i<filter.length;i++){
 		var objVal = getObjectField(obj,filter[i].field);
 		var filterVal = filter[i].val;
@@ -85,22 +100,30 @@ function isObjectShouldBeFilter(obj,filter){
 /*****************************************************
 *进行客户端对象数据更新的方法
 *****************************************************/
-CalendarObject.update = function(target,objs,field,action,compareFunc){
+Objects.func.update = function(target,objs,field,action,compareFunc){
+
+	if(isUndefined(objs))
+		return false;
+	
+	if(!(objs instanceof Array))
+		objs = [objs];
 	if(isUndefined(compareFunc) || typeof(compareFunc) != 'function')
-		compareFunc = CalendarObject.compare;
+		compareFunc = Objects.func.compare;
 	
 	
 	if(isUndefined(action))
 		action = "updateOrNew";
 	
 	if(action == 'new'){
-		target = target.concat(objs);
+		return target.concat(objs);
+		
 	}
 	
 	
+		
 	for(var i=0;i<objs.length;i++){
 		var o = objs[i];
-		var t = CalendarObject.getObject(target,o,field,false,compareFunc);
+		var t = Objects.func.getObject(target,o,field,false,compareFunc);
 		if(t != null){
 			var index = target.index(t);
 			if(action == "update" || action == "updateOrNew"){
@@ -109,7 +132,7 @@ CalendarObject.update = function(target,objs,field,action,compareFunc){
 				target.splice(index,1);
 			}	
 		}else{
-			if(action == "updateOrNew")
+			if(action == "updateOrNew" || action == 'update')
 				target.push(o);
 		}
 	}
@@ -119,9 +142,9 @@ CalendarObject.update = function(target,objs,field,action,compareFunc){
 /*****************************************************
 *查找对象
 *****************************************************/
-CalendarObject.getObject = function(target,val,field,isMutiple,compareFunc){
+Objects.func.getObject = function(target,val,field,isMutiple,compareFunc){
 	if(isUndefined(compareFunc) || typeof(compareFunc) != 'function')
-		compareFunc = CalendarObject.compare;
+		compareFunc = Objects.func.compare;
 	
 	if(isUndefined(isMutiple))
 		isMutiple = false;

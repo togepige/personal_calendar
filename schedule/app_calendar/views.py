@@ -136,6 +136,7 @@ def getActivity(request):
 	qRepeat = Q(repeat__isnull=True)
 	qDate = (q1 | q2)
 	
+
 	calendarBooks = list(getCalendarBook(user,'A')) + list(getSubscribeBook(user))
 	print "calendarBook len" + str(len(calendarBooks))
 	qBook = Q(calendarBook__in=calendarBooks)
@@ -171,22 +172,13 @@ def getRequiredInfo(request):
 	timezone = pytz.timezone(userSetting.timezone)
 	tzAbbr = datetime.now(timezone).strftime('%Z')
 	tzOffset = datetime.now(timezone).strftime('%z')
-	calendarBooks = getCalendarBook(user,ACTIIVITYMODEL)
-	
-	bookSubscribe = getSubscribeBook(user)
-	subscribeInfo = CalendarBookSubscribe.objects.filter(user=user)
-	
-	
 	today = TimeZoneHelper.now()
+	
 	result = JSONHelper.getJSON(result='success',
-					book=calendarBooks,
-					userSetting=userSetting,
 					tzAbbr=tzAbbr,
 					tzOffset=tzOffset,
 					today = today,
-					subscribe = bookSubscribe,
-					subscribeInfo=subscribeInfo,
-					user=[{'id':user.id,'username':user.username}])
+					user={'id':user.id,'username':user.username})
 	return HttpResponse(result,mimetype=MIMETYPE['json'])
 
 @login_required
@@ -216,7 +208,7 @@ def updateActivityDetail(request):
 	
 	
 	if isUndefined(actObj['pk']):
-		action = 'add'
+		action = 'new'
 	elif isUndefined(actObj['action']) or actObj['action'] == 'update':
 		action = 'update'
 	elif actObj['action'] == 'delete':
@@ -418,5 +410,30 @@ def updateUserSetting(request):
 	json = JSONHelper.getJSON(result=MESSAGE.success,userSetting=userSetting)
 	return HttpResponse(json,mimetype=MIMETYPE['json'])
 
+@login_required
+def getUserSetting(request):
+	user = request.user
+	userSetting = user.get_profile()
+	json = JSONHelper.getJSON(result=MESSAGE.success,userSetting=userSetting)
+	return HttpResponse(json,mimetype=MIMETYPE['json'])
 	
+@login_required
+def getCalendarBookView(request):
+	user = request.user
+	
+	books = []
+	subscribe = []
+	#获取用户自身的日历本
+	calendarBooks = user.calendarbook_set.all() \
+							.order_by('-isDefault','-createDateTime')
+							
+	subscribeBooks = CalendarBookSubscribe.objects.filter(user=user)
+	for sub in subscribeBooks:
+		books.append(sub.calendarBook)
+		subscribe.append(sub)
+	
+	books += list(calendarBooks)
+	
+	json = JSONHelper.getJSON(result=MESSAGE.success,calendarBook=books,subscribe=subscribe)
+	return HttpResponse(json,mimetype=MIMETYPE['json'])
 	

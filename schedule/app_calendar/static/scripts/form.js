@@ -1,3 +1,6 @@
+var Forms = {};
+Forms.func = {};
+
 /*****************************************************
 *将焦点移至第一个可输入的表单元素上
 *****************************************************/
@@ -43,6 +46,9 @@ function dataObjToForm(dataObj,jqForm){
 	jqForm.find(".date-picker");
 }
 
+Forms.func.dataObjToForm = function(dataObj,$form){
+	return dataObjToForm(dataObj,$form);
+}
 /*****************************************************
 *将给定的JS数组中的值根据给定的id字段和content字段赋值给Select元素
 *****************************************************/
@@ -64,4 +70,8 @@ function valueToSelect(jqElement,dataArray,valueField,contentField){
 		var option = option1 + id + option2 + content + option3;
 		jqElement.append(option);
 	}
+}
+
+Forms.func.valueToSelect = function($select,dataArray,valueField,contentField){
+	return valueToSelect($select,dataArray,valueField,contentField);
 }
