@@ -1,0 +1,7 @@
+Django==1.4.0
+MySQL-python=1.2.5
+python-dateutil==2.5.2
+simplejson==3.8.2
+pytz>=2012c
+six==1.10.0
+wheel==0.24.0
