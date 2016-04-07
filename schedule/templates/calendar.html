@@ -22,18 +22,18 @@
 {% endblock %}
 
 {% block navbar %}
-	<div class="nav-collapse">
+<div class="nav-collapse">
 	</div>
 	<ul class="nav">
 	  <li class="active"><a id="to-calendar">日历主页</a></li>
 	  <li class="active"><a id="to-user-setting">个人设置</a></li>
 	</ul>
-	<form id="calendar-search-form" class="navbar-form pull-left">
+	<form id="global-search-form" class="navbar-form pull-left">
 		<input name="search-content" type="text" class="search-query span2" placeholder="搜索"/>
 	</form>
 	
 	<ul class="nav pull-right">
-	  <li class="active"><a href="/calendar/logout">退出登录</a></li>
+		<li class="active"><a href="/calendar/logout">退出登录</a></li>
 	</ul>
 	
 	<p id="now-username" class="navbar-text pull-right">{{ user.username }}</p>

@@ -252,6 +252,12 @@ Calendar.event.initLeftNavEvent = function(){
 			Calendar.view.month.func.refresh();
 		}
 	);
+	
+	$sideBarNav.on('click','#recent-activity',function(){
+		var begin = Calendar.today.clone();
+		var end = begin.clone().addDays(3);
+		Calendar.modal.func.showActivityBroswer(begin,end);
+	});
 }
 /*****************************************************
 *顶栏事件

@@ -5,6 +5,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.db.models.signals import *
 from django.contrib import admin
+from schedule.app_calendar.manager import *
+
 
 ACTIIVITYMODEL = 'A'
 TODOMODEL = 'T'
@@ -105,6 +107,8 @@ class Activity(CalendarBase):
 	location = models.TextField(null=True,blank=True)
 	repeat = models.OneToOneField('Repeat',null=True,blank=True)
 	
+	objects = ActivityManager()
+	
 	def save(self,*args,**kwargs):
 		if self.endDateTime is None:
 			self.endDateTime = self.beginDateTime
@@ -158,8 +162,19 @@ class CalendarBook(ModelBase):
 	isDefault = models.BooleanField(default=False)
 	introduction = models.TextField(null=True,blank=True)
 	calendarModelType = models.CharField(default='A',max_length=3,choices=CALENDARMODELTYPE)
+	timezone = models.TextField()	#日历的时区
 	
-	
+	def save(self,*args,**kwargs):
+		"""
+		重载保存函数
+		"""
+		#判断是否有时区信息
+		if self.timezone is None or self.timezone is '':
+			self.timezone = "Asia/Shanghai"
+		
+		
+		super(CalendarBook,self).save(*args, **kwargs)
+			
 	def __unicode__(self):
 		return self.name
 		
@@ -277,7 +292,8 @@ class Repeat(ModelBase):
 	endType = models.CharField(max_length=1,choices=REPEATENDTYPE,default='N',blank=True)#表示重复的类型
 	endTimes = models.IntegerField(null=True,blank=True)#如果结束类型为次数，则启用此字段
 	endDateTime = models.DateTimeField(null=True,blank=True)#如果结束类型为日期，则启用此字段
-
+	objects = RepeatManager()
+	
 class UserSetting(ModelBase):
 	""" 用户相关的配置信息
 	"""

@@ -22,8 +22,10 @@ def getDefaultActivityBook(user,calendarBook=None):
 	#如果传入的calendarBook为空或者user不匹配，则返回默认的calendarBook
 	calendarBooks = user.calendarbook_set.filter(isDefault__exact=True)
 	if calendarBooks.count() == 0:
+		print "get default 1"
 		calendarBook = CalendarBook(user=user,isDefault=True,name='默认日历本')
 		calendarBook.save()
+		print "get default 2"
 	else:
 		calendarBook = calendarBooks[0]
 	return calendarBook
@@ -137,15 +139,19 @@ def updateActivity(user,actObj=None,**args):
 	print 5
 	#日历本
 	if 'calendarBook' in actObj and isUndefined(actObj['calendarBook']) is False:
+		print 5.1
 		calendarBook = CalendarBook.objects.get(pk=actObj.get('calendarBook',''))
 		if calendarBook is None:
 			calendarBook = getDefaultActivityBook(user)
 		
 		act.calendarBook = calendarBook
 	else:
+		print 5.2
 		if act.id is None:
+			print 5.3
 			calendarBook = getDefaultActivityBook(user)
 			act.calendarBook = calendarBook
+			print 5.4
 	
 	
 	print 6

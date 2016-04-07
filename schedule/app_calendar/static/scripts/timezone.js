@@ -49,7 +49,7 @@ function TimeZoneDate(d){
 	}
 	else{
 		var len = d.length;
-		if(len >= 19){
+		if(len > 19){
 			this._pureDate = d.substring(0,19);
 			this._timeZoneOffset = TimeZoneDate.getTimeZoneFromISO(d);
 			if(this._timeZoneOffset == "")
@@ -75,9 +75,9 @@ function TimeZoneDate(d){
 	
 	if(needConvert && TimeZoneDate._publicOffset != ""){
 		this.asTimeZone(TimeZoneDate._publicOffset);
+		// this._timeZoneOffset = TimeZoneDate._publicOffest;
 	}
 	
-
 	return this;
 }
 TimeZoneDate.compare = function(d1,d2){
@@ -86,8 +86,8 @@ TimeZoneDate.compare = function(d1,d2){
 	if(typeof(d2) == 'string')
 		d2 = new TimeZoneDate(d2);
 		
-	d1 = d1.clone().asTimeZone(TimeZoneDate._UTCOffset);
-	d2 = d2.clone().asTimeZone(TimeZoneDate._UTCOffset);
+	// d1 = d1.clone().asTimeZone(TimeZoneDate._UTCOffset);
+	// d2 = d2.clone().asTimeZone(TimeZoneDate._UTCOffset);
 	
 	if(d1.toString() < d2.toString()) return -1;
 	else if(d1.toString() == d2.toString()) return 0;
@@ -255,7 +255,8 @@ TimeZoneDate.prototype.date = function(num){
 	var valid = Date.validateDay(Number(this.getDate()),Number(this.getYear()),Number(this.getMonth())-1);
 	if(valid != true) return null;
 	
-	d = new Date().clearTime();
+	d = new Date();
+	d.setDate(1);
 	d.setFullYear(this.getYear());
 	d.setMonth(this.getMonth() - 1);
 	d.setDate(this.getDate());

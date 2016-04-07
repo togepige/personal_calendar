@@ -51,21 +51,27 @@ Calendar.modal.func.showSimpleEdit = function(act,$position){
 Calendar.modal.func.showActivityBroswer = function(beginDate,endDate){
 	var acts = Calendar.activity.func.getActivityByDate(beginDate,endDate);
 	var $broswer = $("#calendar-activity-broswer");
-	var $actTable = $broswer.find("table:first");
+	var $ul = $broswer.find("ul:first");
+	
 	var $trTemplate = Calendar.view.$.eventBroswerRowTemplate;
-	$actTable.html("");
+	$ul.html("");
+	
 	for(var i=0;i<acts.length;i++){
-		var $tr = $trTemplate.clone();
-		var $td = $tr.children("td:first");
-		
-		$td.find(".event-content").text(getShort(acts[i].fields.content,30));
-
-		if(acts[i].fields.isWholeDay == false){
-			var beginDate = new TimeZoneDate(acts[i].fields.beginDateTime);
-			$td.find(".event-time").text(moment(beginDate.date()).format("LT"));
-		}
-		$td.attr("activity",acts[i].pk);
-		$actTable.append($tr);
+		var act = acts[i];
+		var $row = $trTemplate.clone();
+		var beginDate = new TimeZoneDate(act.fields.beginDateTime);
+		var date;
+		var content = getShort(act.fields.content,30);
+		if(content == "")
+			content = "无内容";
+		$row.children(".activity-content").text(content);
+		if(acts[i].fields.isWholeDay == false)
+			date = moment(beginDate.date()).format("LL");
+		else
+			date = moment(beginDate.date()).format("LLL");
+		$row.children(".activity-date").text(date);
+		$row.attr("activity",acts[i].pk);
+		$ul.append($row);
 	}
 	showModal($broswer);
 }

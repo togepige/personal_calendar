@@ -31,7 +31,6 @@
 			cursor:pointer;
 		}
 	}
-
 	.d-month-body{
 		height:95%;
 		position:relative;
@@ -71,15 +70,33 @@
 					background:url("/static/img/event.jpg");
 					border-radius:6px;
 				}
+				td.repeat{
+					div{
+						background-color:#EBE3FF;
+						border:1px solid #B99AFF;
+						color:#777;
+					}
+				}
 			}
 		}
 	}
 
 }
 
+
 .activity-broswer{
-	table{
-		width:100%;
+	.modal-body{
+		padding-left:1px;
+	}
+	li{
+		&.activity-row{
+			cursor:pointer;
+			list-style:none;
+			border:@base-border;
+			&:hover{
+				background-color:#DDD;
+			}
+		}
 	}
 }
 

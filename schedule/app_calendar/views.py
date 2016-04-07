@@ -21,6 +21,7 @@ import pytz
 import string
 import sys
 
+
 MIMETYPE = {'json':'application/json',}
 PASSWORD = "password"
 USERNAME = "username"
@@ -125,25 +126,12 @@ def getActivity(request):
 		d = TimeZoneHelper.ISOToUTC(dS)
 		dateArray.append(d)
 	
-	
 	maxD = max(dateArray)
 	minD = min(dateArray)
 	
-	qUser = Q(user__exact=user)
-	
-	q1 = Q(beginDateTime__lte=maxD) & Q(beginDateTime__gte=minD)
-	q2 = Q(endDateTime__lte=maxD) & Q(endDateTime__gte=minD)
-	qRepeat = Q(repeat__isnull=True)
-	qDate = (q1 | q2)
-	
+	activities = Activity.objects.getByDate(user,minD,maxD)
 
-	calendarBooks = list(getCalendarBook(user,'A')) + list(getSubscribeBook(user))
-	print "calendarBook len" + str(len(calendarBooks))
-	qBook = Q(calendarBook__in=calendarBooks)
-
-	activities = Activity.objects.filter(qBook,qDate).order_by('beginDateTime')
-	#取出重复事件及重复信息
-	repeats = getRepeats(activities)
+	repeats = Repeat.objects.getByActivity(activities)
 	
 	
 	json = JSONHelper.getJSON(result='success',activity=activities,repeat=repeats)
@@ -153,7 +141,7 @@ def getRepeatActivity(request):
 	qRepeat = Q(repeat__isnull=False)
 	#取出重复事件及重复信息
 	repeatActivities = Activity.objects.select_related().filter(qRepeat).order_by('beginDateTime')
-	repeats = getRepeats(repeatActivities)
+	repeats = Repeat.objects.getByActivity(activities)
 	json = JSONHelper.getJSON(result='success',repeatActivity=repeatActivities,repeat=repeats)
 	return HttpResponse(json,mimetype=MIMETYPE['json'])
 
@@ -183,6 +171,7 @@ def getRequiredInfo(request):
 
 @login_required
 def updateActivityDetail(request):
+
 	user = request.user
 	if isUserLogined(user) is False:
 		return FAILRESPONSE
@@ -226,7 +215,9 @@ def updateActivityDetail(request):
 
 @login_required
 def updateCalendarBook(request):
+
 	user = request.user
+
 	if isUserLogined(user) is False:
 		return FAILRESPONSE
 		
@@ -254,13 +245,6 @@ def updateCalendarBook(request):
 	
 	if 'introduction' in bookData:
 		calendarBook.introduction = bookData['introduction']
-	
-	# if 'is-public' in bookData:
-		# if bookData['is-public'] == 'true':
-			# if calendarBook.isPublic != True
-				# calendarBook.isPublic = True
-		# else:
-			# calendarBook.isPublic = False
 			
 	calendarBook.user = user
 	
@@ -437,3 +421,14 @@ def getCalendarBookView(request):
 	json = JSONHelper.getJSON(result=MESSAGE.success,calendarBook=books,subscribe=subscribe)
 	return HttpResponse(json,mimetype=MIMETYPE['json'])
 	
+	
+@login_required
+def globalSearch(request):
+	print 'global search function'
+	
+	content = request.POST['content']
+	
+	acts = Activity.objects.filter(content__contains=content)
+	
+	json = JSONHelper.getJSON(result=MESSAGE.success,activity=acts)
+	return HttpResponse(json,mimetype=MIMETYPE['json'])

@@ -31,5 +31,6 @@ urlpatterns = patterns('schedule.app_calendar.views',
 	url(r'^get/user-setting','getUserSetting'),
 	url(r'^get/calendar-book','getCalendarBookView'),
 	url(r'^update/user-setting','updateUserSetting'),
+	url(r'^search/all','globalSearch'),
 )
 

@@ -7,7 +7,7 @@ Calendar.view.$.monthBody = Calendar.view.$.month.find(".d-month-body");
 Calendar.view.$.template = $("#calendar-template");
 Calendar.view.$.detail = $("#calendar-activity-detail");
 Calendar.view.$.eventRowTemplate = Calendar.view.$.template.find(".tr-event-row:first");
-Calendar.view.$.eventBroswerRowTemplate = Calendar.view.$.template.find(".tr-event-broswer:first");
+Calendar.view.$.eventBroswerRowTemplate = Calendar.view.$.template.find(".activity-row:first");
 
 Calendar.view.$.monthRowTemplate = Calendar.view.$.template.find(".d-month-row:first");
 Calendar.view.month = {};
@@ -19,7 +19,7 @@ Calendar.view.month.event = {};
 Calendar.view.month.weekDays = [];
 Calendar.view.month.monthRowCanMore = {};
 Calendar.view.lastMouseWheelDate = null;
-Calendar.view.monthWheelInterval = 600;
+Calendar.view.monthWheelInterval = 1000;
 
 Calendar.view.detail = {};
 Calendar.view.detail.func = {};
@@ -288,6 +288,8 @@ Calendar.view.month.func.activityToCalendar = function(dealObject){
 
 				if(isDurative)
 					$event.addClass("durative");
+				if(activity.fields.repeat != null)
+					$event.addClass("repeat");
 				content = getShort(content);
 				$content.html(content);
 				$event.attr("activity",activity.pk);
@@ -580,10 +582,14 @@ Calendar.view.func.removeFilter = function(option){
 			return 1;
 	})
 }
+
+
 /*****************************************************
 *设置每一个日历对象的事件响应
 *****************************************************/
 Calendar.view.event.dealWithMenuBarEvent = function(calendar){
+	
+
 	Calendar.view.$.main.find(".btn-today").click(function(){
 		Calendar.view.calendarDate = Calendar.today.clone();
 		Calendar.view.func.refresh();
@@ -691,6 +697,7 @@ Calendar.view.event.initActionEvent = function(calendar){
 }
 
 Calendar.view.detail.event.initSelectEvent = function(){
+	var $container = $("#activity-detail-body").find("form:first");
 	//日期选择的事件处理
 	Calendar.view.$.detail.find("[name='c-is-whole-day']").click(function(){
 		if($(this).attr("checked")=="checked"){
@@ -828,6 +835,52 @@ Calendar.view.detail.func.submit = function(){
 	toContainer(Calendar.view.$.main,function(){
 		Calendar.view.month.func.refresh();
 	});
+}
+/*****************************************************
+*搜索自动补全
+*****************************************************/
+Calendar.view.event.searchEvent = function(){
+	$("#global-search-form").find("[name=search-content]").autocomplete({
+		source:function(request,response){
+			$.ajax({
+				url:'/calendar/search/all',
+				type:'post',
+				dataType:'json',
+				data:{
+					content:request.term,
+				},
+				success:function(data){
+					var result = [];
+					//更新对象
+					Objects.func.update(Calendar.models.activity,data.activity,"pk");
+					for(var i=0;i<data.activity.length;i++){
+						var obj = {};
+						var act = data.activity[i];
+						obj.pk = act.pk;
+						if(act.fields.isWholeDay == true)
+							obj.dateTime = moment(act.fields.beginDateTime).format("LL");
+						else
+							obj.dateTime = moment(act.fields.beginDateTime).format("LLL");
+							
+						obj.value = getShort(act.fields.content);
+						result.push(obj);
+					}
+					response(result);
+				},	
+			});
+		},
+		select:function(event,ui){
+				console.log("select");
+				var act = Objects.func.getObjectInArray(Calendar.models.activity,"pk",ui.item.pk);
+				Calendar.modal.func.showSimpleEdit(act);
+		},
+	})
+	.data("autocomplete")._renderItem = function(ul,item){
+		return $( "<li></li>" )
+				.data( "item.autocomplete", item )
+				.append( "<a>" + item.dateTime + "<br>" + item.value + "</a>" )
+				.appendTo( ul );
+	};
 }
 
 

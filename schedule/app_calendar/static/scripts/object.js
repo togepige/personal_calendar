@@ -103,7 +103,7 @@ Objects.isObjectShouldBeFilter = function(obj,filter){
 Objects.func.update = function(target,objs,field,action,compareFunc){
 
 	if(isUndefined(objs))
-		return false;
+		return target;
 	
 	if(!(objs instanceof Array))
 		objs = [objs];
@@ -180,6 +180,5 @@ Array.prototype.index = function(obj,jsonFind){
 				return i;
 		}
 	}
-	
 	return -1;
 }
